@@ -1,7 +1,8 @@
-var Game = require("./game.js");
+var Furry = require ("./furry.js");
+var Coin = require ("./coin.js");
 
 function Game() {
-
+    var self = this;
     var board = document.querySelector("#board");
     this.board = board.getElementsByTagName("div");
     this.furry = new Furry();
@@ -49,7 +50,7 @@ function Game() {
         }
     };
 
-    // function changing furry move
+    // function changing furry moving direction
 
     this.turnFurry = function () {
         switch (event.which) {
@@ -68,6 +69,8 @@ function Game() {
         }
     };
 
+    // function moving furry in right direction
+
     this.moveFurry = function () {
         if (this.furry.direction == "right") {
             this.furry.x = this.furry.x + 1;
@@ -78,8 +81,36 @@ function Game() {
         } else if (this.furry.direction == "down") {
             this.furry.y = this.furry.y - 1;
         }
+        self.gameOver();
+        self.showFurry();
+        self.gameOver();
+        self.checkCoinCollision();
 
     };
 
+    // getting score - checking if furry get a coin
 
+    this.checkCoinCollision = function () {
+        var pos = this.index(this.furry.x, this.furry.y);
+        if (this.furry.x == this.coin.x &&  this.furry.y == this.coin.y) {
+            this.board[pos].classList.remove('coin');
+            this.score ++;
+            this.scoreElement.innerHTML = this.score;
+            this.coin = new Coin();
+            self.hideVisibleCoin();
+            self.showCoin();
+        }
+    };
+
+    // checking if furry hit  the wall - game over
+    this.gameOver = function () {
+        if (this.furry.x < 0 || this.furry.y < 0 || this.furry.x > 9 || this.furry.y > 9) {
+            clearInterval(this.idSetInterval);
+            this.hideVisibleFurry();
+            this.alert.innerHTML = "GAME OVER";
+
+        }
+    };
 }
+
+module.exports = Game;
