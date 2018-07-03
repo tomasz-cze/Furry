@@ -1,3 +1,6 @@
+
+https://tomasz-cze.github.io/Furry/
+
 Furry game.
 
 The hero of our game is Furry, who moves around the board with the size of 10x10 fields.
